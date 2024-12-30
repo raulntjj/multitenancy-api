@@ -13,25 +13,23 @@
 |
 */
 
-// $router->get('/', function () use ($router) {
-//     return $router->app->version();
-// });
+$router->group(['prefix' => 'core'], function () use ($router) {
+    $router->post('login', 'Core\Http\Controllers\AuthController@login');
 
-$router->group([
-    'prefix' => 'tenants',
-], function () use ($router) {
-    $router->get('/', function () {
-        return 'Multi tenancy';
+    $router->group(['middleware' => 'core.auth'], function () use ($router) {
+        $router->post('tenants', 'Core\Http\Controllers\TenantController@store');
     });
 });
 
 
 $router->group([
-    'prefix'     => '{tenant}/api/v1',
-    'middleware' => 'tenant',
+    'prefix' => '{tenant}/api/v1',
+    'middleware' => 'identify.tenant'
 ], function () use ($router) {
-    $router->get('/', function () {
-        return 'School tenant';
+    $router->post('login', 'Tenant\Http\Controllers\AuthController@login');
+
+    $router->group(['middleware' => 'tenant.auth'], function () use ($router) {
     });
 });
+
 

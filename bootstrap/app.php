@@ -113,7 +113,9 @@ $app->router->group([
 });
 
 $app->routeMiddleware([
-    'tenant' => App\Http\Middleware\IdentifyTenant::class,
+    'identify.tenant' => App\Tenant\Http\Middleware\IdentifyTenant::class,
+    'core.auth'       => App\Core\Http\Middleware\CoreAuthMiddleware::class,
+    'tenant.auth'     => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
 ]);
 
 return $app;
