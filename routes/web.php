@@ -13,6 +13,25 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+// $router->get('/', function () use ($router) {
+//     return $router->app->version();
+// });
+
+$router->group([
+    'prefix' => 'tenants',
+], function () use ($router) {
+    $router->get('/', function () {
+        return 'Multi tenancy';
+    });
 });
+
+
+$router->group([
+    'prefix'     => '{tenant}/api/v1',
+    'middleware' => 'tenant',
+], function () use ($router) {
+    $router->get('/', function () {
+        return 'School tenant';
+    });
+});
+
