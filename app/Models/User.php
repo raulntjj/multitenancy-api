@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
-{
+class User extends Model implements AuthenticatableContract, AuthorizableContract {
     use Authenticatable, Authorizable, HasFactory;
 
     /**
@@ -19,7 +18,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email',
+        'name',
+        'email',
+        'password',
+        'role',
     ];
 
     /**
