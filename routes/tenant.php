@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use App\Helpers\UtilityHelper;
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -17,10 +19,14 @@ $router->group([
     'prefix' => '{tenant}/api/v1',
     'middleware' => 'identify.tenant'
 ], function () use ($router) {
-    $router->post('login', 'Tenant\Http\Controllers\AuthController@login');
+    $router->get('/', function (Request $request) {
+        $tenantSlug = $request->route('tenant');
+        return UtilityHelper::ping($tenantSlug);
+    });
+
+    $router->post('login', 'AuthController@login');
 
     $router->group(['middleware' => 'tenant.auth'], function () use ($router) {
+        $router->get('/me', 'UserController@me');
     });
 });
-
-

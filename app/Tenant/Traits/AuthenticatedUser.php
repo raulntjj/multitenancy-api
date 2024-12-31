@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Core\Traits;
+namespace App\Tenant\Traits;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use App\Core\Services\UserService;
+use App\Tenant\Services\UserService;
 use App\Exceptions\HandleException;
 
 trait AuthenticatedUser {
