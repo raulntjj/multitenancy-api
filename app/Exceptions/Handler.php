@@ -46,14 +46,10 @@ class Handler extends ExceptionHandler {
      * @throws \Throwable
      */
     public function render($request, Throwable $exception) {
-        if ($exception instanceof HttpException) {
-            return response()->json([
-                'status_code' => $exception->getCode(),
-                'status' => 'failed',
-                'details' => $exception->getMessage(),
-            ], $exception->getCode());
+        if ($exception instanceof HandlerException) {
+            return $exception->render($request);
         }
-    
+
         return response()->json([
             'status_code' => $exception->getCode() ?: 500,
             'status' => 'failed',

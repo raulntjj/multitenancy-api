@@ -8,6 +8,7 @@ use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
 use App\Core\Models\User;
 use App\Core\Services\UserService;
+use App\Exceptions\HandleException;
 
 class AuthController extends Controller {
 
@@ -23,11 +24,11 @@ class AuthController extends Controller {
             $user = $this->userService->findUser($credentials);
 
             if (!$user) {
-                throw new \Exception('User not found', 404);
+                throw new HandleException('Credentials does not match', 404);
             }
     
             if (!password_verify($credentials['password'], $user->password)) {
-                throw new \Exception('Invalid password', 401);
+                throw new HandleException('Credentials does not match', 401);
             }
 
             $payload = [
@@ -51,13 +52,9 @@ class AuthController extends Controller {
                 ]
             ]);
 
-            throw new Exception("Something went wrong!", 500);
+            throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            return response()->json([
-                'status_code' => $e->getCode() ?: 500,
-                'status' => 'failed',
-                'details' => $e->getMessage(),
-            ], $e->getCode() ?: 500);
+            throw new HandleException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -71,13 +68,9 @@ class AuthController extends Controller {
                     'user'  => $user
                 ]
             ]);
-            throw new Exception("Something went wrong!", 500);
+            throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            return response()->json([
-                'status_code' => $e->getCode() ?: 500,
-                'status' => 'failed',
-                'details' => $e->getMessage(),
-            ], $e->getCode() ?: 500);
+            throw new HandleException($e->getMessage(), $e->getCode());
         }
     }
 }

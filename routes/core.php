@@ -1,5 +1,6 @@
 <?php
 
+
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -20,12 +21,12 @@ $router->group(['prefix' => 'core'], function () use ($router) {
     $router->group(['middleware' => 'core.auth'], function () use ($router) {
         $router->get('me', 'UserController@show');
         $router->put('me', 'UserController@update');
-        $router->delete('me', 'UserController@delete');
+        $router->delete('me', 'UserController@destroy');
 
-        $router->get('tenants', 'AuthController@show');
-        $router->get('tenants/{slug}', 'AuthController@show');
-        $router->post('tenants', 'AuthController@store');
-        $router->put('tenants/{slug}', 'AuthController@update');
-        $router->delete('tenants/{slug}', 'AuthController@destroy');
+        $router->get('tenants', 'TenantController@index');
+        $router->post('tenants', 'TenantController@store');
+        $router->get('tenants/{slug}', 'TenantController@show');
+        $router->put('tenants/{slug}', 'TenantController@update');
+        $router->delete('tenants/{slug}', 'TenantController@destroy');
     });
 });
