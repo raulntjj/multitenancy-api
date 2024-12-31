@@ -8,6 +8,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
 use App\Exceptions\HandleException;
+use App\Tenant\Services\UserService;
 
 class AuthController extends Controller {
 
@@ -18,10 +19,9 @@ class AuthController extends Controller {
 
     public function login(Request $request) {
         try {
-            $credentials = $request->only('email', 'password');
+            $credentials = $request->only('email', 'password', 'user');
     
             $user = $this->userService->findUser($credentials);
-
             if (!$user) {
                 throw new HandleException('Credentials does not match', 404);
             }
@@ -33,7 +33,7 @@ class AuthController extends Controller {
             $payload = [
                 'iss'  => 'core-api',
                 'sub'  => $user->id,
-                'role' => 'core',
+                'role' => 'tenant',
                 'iat'  => time(),
                 'exp'  => time() + 3600,
             ];

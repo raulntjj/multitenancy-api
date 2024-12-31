@@ -16,7 +16,7 @@ use App\Helpers\UtilityHelper;
 */
 
 $router->group([
-    'prefix' => '{tenant}/api/v1',
+    'prefix' => '/api/v1/{tenant}',
     'middleware' => 'identify.tenant'
 ], function () use ($router) {
     $router->get('/', function (Request $request) {
@@ -25,8 +25,17 @@ $router->group([
     });
 
     $router->post('login', 'AuthController@login');
+    $router->post('register', 'AuthController@register');
 
     $router->group(['middleware' => 'tenant.auth'], function () use ($router) {
-        $router->get('/me', 'UserController@me');
+        $router->get('/me', 'ProfileController@show');
+        $router->put('/me', 'ProfileController@update');
+        $router->delete('/me', 'ProfileController@destroy');
+
+        $router->get('/users', 'UserController@index');
+        $router->get('/users/{user}', 'UserController@show');
+        $router->post('/users', 'UserController@create');
+        $router->put('/users/{user}', 'UserController@update');
+        $router->delete('/users/{user}', 'UserController@destroy');
     });
 });
