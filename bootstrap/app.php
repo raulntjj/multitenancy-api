@@ -105,15 +105,39 @@ $app->configure('app');
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
-    require __DIR__.'/../routes/web.php';
+$app->router->get('/', function () {
+    return response()->json([
+        'status_code' => 200,
+        'status' => 'sucess',
+        'details' => 'Connection stabilized succefully!',
+        'server' => 'Timetable API Rest',
+        'version' => 'v1 - 1.0',
+    ]);
 });
 
+$app->router->group([
+    'namespace' => 'App\Tenant\Http\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/tenant.php';
+});
+
+$app->router->group([
+    'namespace' => 'App\Core\Http\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/core.php';
+});
+
+// Fallback
+$app->router->get('/{any:.*}', function () {
+    throw new App\Exceptions\HandleException('Route not found', 404);
+});
+
+
+
 $app->routeMiddleware([
-    'tenant' => App\Http\Middleware\IdentifyTenant::class,
+    'identify.tenant' => App\Tenant\Http\Middleware\IdentifyTenant::class,
+    'core.auth'       => App\Core\Http\Middleware\CoreAuthMiddleware::class,
+    'tenant.auth'     => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
 ]);
 
 return $app;
