@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Core\Http\Controllers;
+namespace App\Tenant\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
-use App\Core\Services\UserService;
-use App\Core\Traits\AuthenticatedUser;
+use App\Tenant\Services\UserService;
+use App\Tenant\Traits\AuthenticatedUser;
 use App\Exceptions\HandleException;
 
 class UserController extends Controller {
@@ -17,12 +17,30 @@ class UserController extends Controller {
         $this->userService = $userService;
     }
 
-    public function show(Request $request) {
+    public function index(Request $request) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $users = $this->userService->findManyUsers($user);
+            if (!$users) {
+                throw new HandleException('User not found', 404);
+            }
+
+            return response()->json([
+                'status_code' => 200,
+                'status' => 'success',
+                'payload' => $users,
+            ]);
+        } catch (\Exception $e) {
+            throw new HandleException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function show(Request $request, String $user) {
+        try {
+            $user = $this->userService->findByUser($user);
             if (!$user) {
                 throw new HandleException('User not found', 404);
             }
+
             return response()->json([
                 'status_code' => 200,
                 'status' => 'success',
@@ -33,13 +51,13 @@ class UserController extends Controller {
         }
     }
 
-    public function update(Request $request) {
+    public function update(Request $request, String $user) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
-            $user = $this->userService->updateUser($request->all(), $user->id);
+            $user = $this->userService->updateUser($request->all(), $uuser);
             if (!$user) {
                 throw new HandleException('User not found', 404);
             }
+
             return response()->json([
                 'status_code' => 200,
                 'status' => 'success',
@@ -50,13 +68,13 @@ class UserController extends Controller {
         }
     }
 
-    public function destroy(Request $request) {
+    public function destroy(Request $request, String $user) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
-            $user = $this->userService->deleteUser($user->id);
+            $user = $this->userService->deleteUser($user);
             if (!$user) {
                 throw new HandleException('User not found', 404);
             }
+            
             return response()->json([
                 'status_code' => 204,
                 'status' => 'success',

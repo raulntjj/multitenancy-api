@@ -24,9 +24,9 @@ $router->group(['prefix' => 'core'], function () use ($router) {
     $router->post('register', 'AuthController@register');
 
     $router->group(['middleware' => 'core.auth'], function () use ($router) {
-        $router->get('me', 'UserController@show');
-        $router->put('me', 'UserController@update');
-        $router->delete('me', 'UserController@destroy');
+        $router->get('me', 'ProfileController@show');
+        $router->put('me', 'ProfileController@update');
+        $router->delete('me', 'ProfileController@destroy');
 
         $router->get('tenants', 'TenantController@index');
         $router->post('tenants', 'TenantController@store');

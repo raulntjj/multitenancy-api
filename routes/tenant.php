@@ -27,6 +27,10 @@ $router->group([
     $router->post('login', 'AuthController@login');
 
     $router->group(['middleware' => 'tenant.auth'], function () use ($router) {
-        $router->get('/me', 'UserController@me');
+        $router->get('/users', 'UserController@index');
+        $router->get('/users/{user}', 'UserController@show');
+        $router->post('/users', 'UserController@create');
+        $router->put('/users/{user}', 'UserController@update');
+        $router->delete('/users/{user}', 'UserController@destroy');
     });
 });
