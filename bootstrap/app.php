@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
+use App\Helpers\UtilityHelper;
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -23,9 +24,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -105,11 +106,33 @@ $app->configure('app');
 | can respond to, as well as the controllers that may handle them.
 |
 */
+$app->router->get('/', function () {
+    return UtilityHelper::ping();
+});
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+    'namespace' => 'App\Core\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__.'/../routes/core.php';
 });
+
+$app->router->group([
+    'namespace' => 'App\Tenant\Http\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/tenant.php';
+});
+
+// Fallback
+$app->router->get('/{any:.*}', function () {
+    throw new App\Exceptions\HandleException('Route not found', 404);
+});
+
+
+
+$app->routeMiddleware([
+    'identify.tenant' => App\Tenant\Http\Middleware\IdentifyTenant::class,
+    'core.auth' => App\Core\Http\Middleware\CoreAuthMiddleware::class,
+    'tenant.auth' => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
+]);
 
 return $app;
