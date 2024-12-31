@@ -10,7 +10,7 @@ use App\Tenant\Services\UserService;
 use App\Tenant\Traits\AuthenticatedUser;
 use App\Exceptions\HandleException;
 
-class UserController extends Controller {
+class ProfileController extends Controller {
     use AuthenticatedUser;
     protected $userService;
     public function __construct(UserService $userService) {

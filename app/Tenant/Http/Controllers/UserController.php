@@ -19,7 +19,7 @@ class UserController extends Controller {
 
     public function index(Request $request) {
         try {
-            $users = $this->userService->findManyUsers($user);
+            $users = $this->userService->findManyUsers();
             if (!$users) {
                 throw new HandleException('User not found', 404);
             }
@@ -51,9 +51,26 @@ class UserController extends Controller {
         }
     }
 
+    public function create(Request $request) {
+        try {
+            $user = $this->userService->createUser($request->all());
+            if (!$user) {
+                throw new HandleException('Something went wrong', 500);
+            }
+
+            return response()->json([
+                'status_code' => 200,
+                'status' => 'success',
+                'payload' => $user,
+            ]);
+        } catch (\Exception $e) {
+            throw new HandleException($e->getMessage(), $e->getCode());
+        }
+    }
+
     public function update(Request $request, String $user) {
         try {
-            $user = $this->userService->updateUser($request->all(), $uuser);
+            $user = $this->userService->updateUser($request->all(), $user);
             if (!$user) {
                 throw new HandleException('User not found', 404);
             }
