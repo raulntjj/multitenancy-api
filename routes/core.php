@@ -18,6 +18,14 @@ $router->group(['prefix' => 'core'], function () use ($router) {
     $router->post('register', 'AuthController@register');
 
     $router->group(['middleware' => 'core.auth'], function () use ($router) {
-        $router->post('tenants', 'Core\Http\Controllers\TenantController@store');
+        $router->get('me', 'UserController@show');
+        $router->put('me', 'UserController@update');
+        $router->delete('me', 'UserController@delete');
+
+        $router->get('tenants', 'AuthController@show');
+        $router->get('tenants/{slug}', 'AuthController@show');
+        $router->post('tenants', 'AuthController@store');
+        $router->put('tenants/{slug}', 'AuthController@update');
+        $router->delete('tenants/{slug}', 'AuthController@destroy');
     });
 });
