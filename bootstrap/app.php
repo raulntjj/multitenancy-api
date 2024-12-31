@@ -107,9 +107,15 @@ $app->configure('app');
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+    'namespace' => 'App\Tenant\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__.'/../routes/tenant.php';
+});
+
+$app->router->group([
+    'namespace' => 'App\Core\Http\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/core.php';
 });
 
 $app->routeMiddleware([

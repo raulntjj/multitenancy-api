@@ -14,22 +14,10 @@
 */
 
 $router->group(['prefix' => 'core'], function () use ($router) {
-    $router->post('login', 'Core\Http\Controllers\AuthController@login');
+    $router->post('login', 'AuthController@login');
+    $router->post('register', 'AuthController@register');
 
     $router->group(['middleware' => 'core.auth'], function () use ($router) {
         $router->post('tenants', 'Core\Http\Controllers\TenantController@store');
     });
 });
-
-
-$router->group([
-    'prefix' => '{tenant}/api/v1',
-    'middleware' => 'identify.tenant'
-], function () use ($router) {
-    $router->post('login', 'Tenant\Http\Controllers\AuthController@login');
-
-    $router->group(['middleware' => 'tenant.auth'], function () use ($router) {
-    });
-});
-
-

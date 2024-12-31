@@ -9,8 +9,7 @@ use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler {
     /**
      * A list of the exception types that should not be reported.
      *
@@ -33,8 +32,7 @@ class Handler extends ExceptionHandler
      *
      * @throws \Exception
      */
-    public function report(Throwable $exception)
-    {
+    public function report(Throwable $exception) {
         parent::report($exception);
     }
 
@@ -47,8 +45,19 @@ class Handler extends ExceptionHandler
      *
      * @throws \Throwable
      */
-    public function render($request, Throwable $exception)
-    {
-        return parent::render($request, $exception);
+    public function render($request, Throwable $exception) {
+        if ($exception instanceof HttpException) {
+            return response()->json([
+                'status_code' => $exception->getCode(),
+                'status' => 'failed',
+                'details' => $exception->getMessage(),
+            ], $exception->getCode());
+        }
+    
+        return response()->json([
+            'status_code' => $exception->getCode() ?: 500,
+            'status' => 'failed',
+            'details' => $exception->getMessage(),
+        ], $exception->getCode() ?: 500);
     }
 }
