@@ -5,23 +5,18 @@ namespace App\Tenant\Http\Middleware;
 use Closure;
 use App\Core\Models\Tenant;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\HandleException;
 
-class IdentifyTenant
-{
-    public function handle($request, Closure $next)
-    {
-        // Supondo que você identifique o "slug" do tenant via prefixo na URL
-        // ex: /eedja/api/v1/... => "eedja"
+class IdentifyTenant {
+    public function handle($request, Closure $next) {
         $tenantSlug = $request->route('tenant');
 
-        // Busca no DB core
         $tenant = Tenant::where('slug', $tenantSlug)->first();
 
         if (!$tenant) {
-            return response()->json(['error' => 'Tenant not found'], 404);
+            throw new HandleException('Tenant not found', 404);
         }
 
-        // Configura a conexão "tenant"
         config([
             'database.connections.tenant' => [
                 'driver'   => 'mysql',

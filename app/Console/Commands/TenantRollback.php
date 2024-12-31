@@ -7,33 +7,34 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use App\Core\Models\Tenant;
 
-class TenantMigrate extends Command {
-    protected $signature = 'tenant:migrate {slug?}';
-    protected $description = 'Starting migrations';
+class TenantRollback extends Command {
+    protected $signature = 'tenant:rollback {slug?} {--step=1}';
+    protected $description = 'Rollback migrations for tenants';
 
     public function handle() {
         $slug = $this->argument('slug');
-        
+        $step = $this->option('step');
+
         if (!$slug) {
-            return $this->migrateAll();
+            return $this->rollbackAll($step);
         } else {
-            return $this->migrateOne($slug);
+            return $this->rollbackOne($slug, $step);
         }
     }
 
-    private function migrateAll() {
+    private function rollbackAll($step) {
         $tenants = Tenant::all();
 
         foreach ($tenants as $tenant) {
-            $this->line('Migrating tenant: ' . $tenant->slug);
-            $this->migrateTenant($tenant);
+            $this->line('Rolling back tenant: ' . $tenant->slug);
+            $this->rollbackTenant($tenant, $step);
         }
 
-        $this->info('Tenants migrated');
+        $this->info('Rollback completed for all tenants.');
         return 0;
     }
 
-    private function migrateOne($slug) {
+    private function rollbackOne($slug, $step) {
         $tenant = Tenant::where('slug', $slug)->first();
 
         if (!$tenant) {
@@ -41,14 +42,14 @@ class TenantMigrate extends Command {
             return 1;
         }
 
-        $this->line("Migrating tenant: {$tenant->slug}");
-        $this->migrateTenant($tenant);
+        $this->line("Rolling back tenant: {$tenant->slug}");
+        $this->rollbackTenant($tenant, $step);
 
-        $this->info("Tenant '{$slug}' migrated!");
+        $this->info("Rollback completed for tenant '{$slug}'.");
         return 0;
     }
 
-    private function migrateTenant(Tenant $tenant) {
+    private function rollbackTenant(Tenant $tenant, $step) {
         config([
             'database.connections.tenant' => [
                 'driver'    => 'mysql',
@@ -65,9 +66,10 @@ class TenantMigrate extends Command {
         DB::reconnect('tenant');
         DB::setDefaultConnection('tenant');
 
-        Artisan::call('migrate', [
+        Artisan::call('migrate:rollback', [
             '--database' => 'tenant',
             '--path'     => 'database/migrations/tenant',
+            '--step'     => $step,
             '--force'    => true,
         ]);
 

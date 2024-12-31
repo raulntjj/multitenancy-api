@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\UtilityHelper;
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
@@ -15,6 +16,10 @@
 */
 
 $router->group(['prefix' => 'core'], function () use ($router) {
+    $router->get('/', function () {
+        return UtilityHelper::ping('MultiTenancy');
+    });
+
     $router->post('login', 'AuthController@login');
     $router->post('register', 'AuthController@register');
 

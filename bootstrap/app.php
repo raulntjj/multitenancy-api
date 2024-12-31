@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/../vendor/autoload.php';
+use App\Helpers\UtilityHelper;
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -106,13 +107,7 @@ $app->configure('app');
 |
 */
 $app->router->get('/', function () {
-    return response()->json([
-        'status_code' => 200,
-        'status' => 'sucess',
-        'details' => 'Connection stabilized succefully!',
-        'server' => 'Timetable API Rest',
-        'version' => 'v1 - 1.0',
-    ]);
+    return UtilityHelper::ping();
 });
 
 $app->router->group([
@@ -136,8 +131,8 @@ $app->router->get('/{any:.*}', function () {
 
 $app->routeMiddleware([
     'identify.tenant' => App\Tenant\Http\Middleware\IdentifyTenant::class,
-    'core.auth'       => App\Core\Http\Middleware\CoreAuthMiddleware::class,
-    'tenant.auth'     => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
+    'core.auth' => App\Core\Http\Middleware\CoreAuthMiddleware::class,
+    'tenant.auth' => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
 ]);
 
 return $app;
