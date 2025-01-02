@@ -32,6 +32,8 @@ $router->group([
         $router->put('/me', 'ProfileController@update');
         $router->delete('/me', 'ProfileController@destroy');
 
+        $router->get('logs', 'AuditLogController@index');
+
         $router->get('/users', 'UserController@index');
         $router->get('/users/{user}', 'UserController@show');
         $router->post('/users', 'UserController@create');

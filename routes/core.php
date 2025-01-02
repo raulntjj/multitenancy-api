@@ -31,6 +31,8 @@ $router->group([
         $router->put('me', 'ProfileController@update');
         $router->delete('me', 'ProfileController@destroy');
 
+        $router->get('logs', 'AuditLogController@index');
+
         $router->get('tenants', 'TenantController@index');
         $router->post('tenants', 'TenantController@store');
         $router->get('tenants/{slug}', 'TenantController@show');
