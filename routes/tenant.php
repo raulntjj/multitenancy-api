@@ -17,7 +17,7 @@ use App\Helpers\UtilityHelper;
 
 $router->group([
     'prefix' => '/api/v1/{tenant}',
-    'middleware' => 'identify.tenant'
+    'middleware' => ['tenant.identify', 'tenant.audit']
 ], function () use ($router) {
     $router->get('/', function (Request $request) {
         $tenantSlug = $request->route('tenant');

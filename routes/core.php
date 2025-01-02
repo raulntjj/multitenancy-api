@@ -15,7 +15,10 @@ use App\Helpers\UtilityHelper;
 |
 */
 
-$router->group(['prefix' => '/api/v1/core'], function () use ($router) {
+$router->group([
+    'prefix' => '/api/v1/core',
+    'middleware' => 'core.audit'
+], function () use ($router) {
     $router->get('/', function () {
         return UtilityHelper::ping('MultiTenancy');
     });
