@@ -8,7 +8,7 @@ class AuditLog {
     protected $logPath;
 
     public function __construct() {
-        $this->logPath = storage_path('logs/tenants/core/audit.log');
+        $this->logPath = storage_path('logs/tenants/core/'. Carbon::now()->format('F') . '/requests.log');
     }
 
     public function getLogs() {
@@ -20,9 +20,8 @@ class AuditLog {
         $lines = File::lines($this->logPath);
 
         foreach ($lines as $line) {
-            if (strpos($line, 'Audit Log:') !== false) {
-                $jsonString = trim(substr($line, strpos($line, '{')));
-                $logs[] = json_decode($jsonString, true);
+            if (preg_match('/\{.*\}/', $line, $matches)) {
+                $logs[] = json_decode($matches[0], true);
             }
         }
 

@@ -15,6 +15,12 @@ class TenantAuditMiddleware {
 
         $tenant = $request->route('tenant');
 
+        if(
+            $request->path() == 'api/v1/' . $tenant . '/login' ||
+            $request->path() == 'api/v1/' . $tenant . '/register') {
+            return $response;
+        }
+
         $tenantLogDir = storage_path('logs/tenants/' . $tenant);
         if (!is_dir($tenantLogDir) && !mkdir($tenantLogDir, 0755, true) && !is_dir($tenantLogDir)) {
             throw new \RuntimeException(sprintf('O diretório "%s" não pôde ser criado.', $tenantLogDir));
