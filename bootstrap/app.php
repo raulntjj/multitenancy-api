@@ -28,6 +28,8 @@ $app->withFacades();
 
 $app->withEloquent();
 
+// $app->withFactories('/../database/factories');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -48,6 +50,13 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
+
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Laravel\Lumen\Http\ResponseFactory as LumenResponseFactory;
+
+$app->singleton(ResponseFactory::class, function ($app) {
+    return new LumenResponseFactory($app, $app['router']);
+});
 
 /*
 |--------------------------------------------------------------------------
