@@ -8,7 +8,7 @@ class AuditLog {
     protected $logPath;
 
     public function __construct($tenant) {
-        $this->logPath = storage_path('logs/tenants/' . $tenant . '/audit.log');
+        $this->logPath = storage_path('logs/tenants/' . $tenant . '/requests.log');
     }
 
     public function getLogs() {

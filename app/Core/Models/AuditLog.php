@@ -8,7 +8,7 @@ class AuditLog {
     protected $logPath;
 
     public function __construct() {
-        $this->logPath = storage_path('logs/tenants/core/'. Carbon::now()->format('F') . '/requests.log');
+        $this->logPath = storage_path('logs/core/requests.log');
     }
 
     public function getLogs() {

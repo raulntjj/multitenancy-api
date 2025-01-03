@@ -133,7 +133,7 @@ $app->routeMiddleware([
     'core.auth' => App\Core\Http\Middleware\CoreAuthMiddleware::class,
     'core.audit' => App\Core\Http\Middleware\CoreAuditMiddleware::class,
     'tenant.auth' => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
-    'tenant.audit' => App\Core\Http\Middleware\CoreAuditMiddleware::class,
+    'tenant.audit' => App\Tenant\Http\Middleware\TenantAuditMiddleware::class,
     'tenant.identify' => App\Tenant\Http\Middleware\IdentifyTenant::class,
 ]);
 
