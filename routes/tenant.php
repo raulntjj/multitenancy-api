@@ -17,7 +17,7 @@ use App\Helpers\UtilityHelper;
 
 $router->group([
     'prefix' => '/api/v1/{tenant}',
-    'middleware' => 'identify.tenant'
+    'middleware' => ['tenant.identify', 'tenant.audit']
 ], function () use ($router) {
     $router->get('/', function (Request $request) {
         $tenantSlug = $request->route('tenant');
@@ -31,6 +31,8 @@ $router->group([
         $router->get('/me', 'ProfileController@show');
         $router->put('/me', 'ProfileController@update');
         $router->delete('/me', 'ProfileController@destroy');
+
+        $router->get('logs', 'AuditLogController@index');
 
         $router->get('/users', 'UserController@index');
         $router->get('/users/{user}', 'UserController@show');

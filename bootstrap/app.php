@@ -130,9 +130,11 @@ $app->router->get('/{any:.*}', function () {
 
 
 $app->routeMiddleware([
-    'identify.tenant' => App\Tenant\Http\Middleware\IdentifyTenant::class,
     'core.auth' => App\Core\Http\Middleware\CoreAuthMiddleware::class,
+    'core.audit' => App\Core\Http\Middleware\CoreAuditMiddleware::class,
     'tenant.auth' => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
+    'tenant.audit' => App\Core\Http\Middleware\CoreAuditMiddleware::class,
+    'tenant.identify' => App\Tenant\Http\Middleware\IdentifyTenant::class,
 ]);
 
 return $app;
