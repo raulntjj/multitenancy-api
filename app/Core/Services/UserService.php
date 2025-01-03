@@ -3,6 +3,8 @@
 namespace App\Core\Services;
 
 use App\Core\Models\User;
+use Database\Factories\UserFactory;
+
 use Illuminate\Support\Facades\Hash;
 
 class UserService {

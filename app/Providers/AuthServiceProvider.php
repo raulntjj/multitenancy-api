@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
