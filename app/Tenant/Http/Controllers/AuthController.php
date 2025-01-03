@@ -3,6 +3,8 @@
 namespace App\Tenant\Http\Controllers;
 
 use App\Tenant\Models\User;
+use Database\Factories\UserFactory;
+
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

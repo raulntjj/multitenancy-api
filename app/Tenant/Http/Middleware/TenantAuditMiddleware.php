@@ -4,8 +4,9 @@ namespace App\Tenant\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Log;
-use App\Tenant\Traits\AuthenticatedUser;
 use Monolog\Handler\StreamHandler;
+use App\Tenant\Traits\AuthenticatedUser;
+use Illuminate\Support\Carbon;
 
 class TenantAuditMiddleware {
     use AuthenticatedUser;
@@ -13,27 +14,25 @@ class TenantAuditMiddleware {
     public function handle($request, Closure $next) {
         $response = $next($request);
 
-        $tenant = $request->route('tenant');
+        $tenant = $request->route('tenant') ?? 'core';
+        $month = strtolower(Carbon::now()->format('F'));
 
-        if(
-            $request->path() == 'api/v1/' . $tenant . '/login' ||
-            $request->path() == 'api/v1/' . $tenant . '/register') {
-            return $response;
+        $baseLogDir = storage_path("logs/tenants/$tenant");
+        $requestsLogFile = "$baseLogDir/requests.log";
+        $auditLogFile = "$baseLogDir/audit.log";
+
+        if (!is_dir($baseLogDir) && !mkdir($baseLogDir, 0755, true) && !is_dir($baseLogDir)) {
+            throw new \RuntimeException(sprintf('O diretório "%s" não pôde ser criado.', $baseLogDir));
         }
 
-        $tenantLogDir = storage_path('logs/tenants/' . $tenant);
-        if (!is_dir($tenantLogDir) && !mkdir($tenantLogDir, 0755, true) && !is_dir($tenantLogDir)) {
-            throw new \RuntimeException(sprintf('O diretório "%s" não pôde ser criado.', $tenantLogDir));
-        }
+        $requestLogger = new \Monolog\Logger('requests');
+        $requestLogger->pushHandler(new StreamHandler($requestsLogFile, \Monolog\Logger::INFO));
 
-        $monolog = Log::getLogger();
-        $monolog->pushHandler(new StreamHandler(
-            $tenantLogDir . '/audit.log',
-            \Monolog\Logger::INFO
-        ));
-
+        $auditLogger = new \Monolog\Logger('audit');
+        $auditLogger->pushHandler(new StreamHandler($auditLogFile, \Monolog\Logger::ERROR));
+        
         $user = null;
-        if ($request->bearerToken()) {
+        if($request->path() != 'api/v1/' . $tenant . '/login' && $request->path() != 'api/v1/' . $tenant . '/register') {
             $user = $this->getAuthenticatedUser($request->bearerToken());
         }
 
@@ -45,10 +44,15 @@ class TenantAuditMiddleware {
             'route' => $request->path(),
             'method' => $request->method(),
             'status_code' => $response->status(),
-            'timestamp' => \Illuminate\Support\Carbon::now(),
+            'description' => $request->header('X-Description') ?? null,
+            'timestamp' => Carbon::now()->toIso8601String(),
         ];
 
-        $monolog->info('Audit Log:', $logData);
+        if ($response->status() >= 400) {
+            $auditLogger->error('Audit Log:', $logData);
+        } else {
+            $requestLogger->info('Request Log:', $logData);
+        }
 
         return $response;
     }

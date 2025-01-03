@@ -10,8 +10,35 @@
         </testsuite>
     </testsuites>
     <php>
+        <!-- Configurações específicas para os testes -->
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_NAME" value="Lumen"/>
+        <env name="APP_KEY" value="L4CNb0HbEQYbK2TGL17llRqiMTRVEDWPZ5fvJmobpck="/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="APP_URL" value="http://localhost"/>
+        <env name="APP_TIMEZONE" value="UTC"/>
+
+        <!-- Configurações de logs -->
+        <env name="LOG_CHANNEL" value="stack"/>
+        <env name="LOG_SLACK_WEBHOOK_URL" value=""/>
+
+        <!-- Configurações de banco de dados -->
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="core_test"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value="root"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="3306"/>
+
+
+        <!-- Configurações de cache e fila -->
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+
+        <!-- Configuração do JWT -->
+        <env name="JWT_SECRET" value="c0e0df542d485c1bcdbcb3be40aa6e5d7f1a6f8c5a0a6085915f2daf615b2584a1c420240e7d082af0e0435144954f4530c892d6fc5e6ede8973d960776813da"/>
     </php>
 </phpunit>

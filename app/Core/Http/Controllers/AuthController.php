@@ -7,6 +7,8 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
 use App\Core\Models\User;
+use Database\Factories\UserFactory;
+
 use App\Core\Services\UserService;
 use App\Exceptions\HandleException;
 

@@ -28,6 +28,8 @@ $app->withFacades();
 
 $app->withEloquent();
 
+// $app->withFactories('/../database/factories');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -48,6 +50,13 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
+
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Laravel\Lumen\Http\ResponseFactory as LumenResponseFactory;
+
+$app->singleton(ResponseFactory::class, function ($app) {
+    return new LumenResponseFactory($app, $app['router']);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -133,7 +142,7 @@ $app->routeMiddleware([
     'core.auth' => App\Core\Http\Middleware\CoreAuthMiddleware::class,
     'core.audit' => App\Core\Http\Middleware\CoreAuditMiddleware::class,
     'tenant.auth' => App\Tenant\Http\Middleware\TenantAuthMiddleware::class,
-    'tenant.audit' => App\Core\Http\Middleware\CoreAuditMiddleware::class,
+    'tenant.audit' => App\Tenant\Http\Middleware\TenantAuditMiddleware::class,
     'tenant.identify' => App\Tenant\Http\Middleware\IdentifyTenant::class,
 ]);
 

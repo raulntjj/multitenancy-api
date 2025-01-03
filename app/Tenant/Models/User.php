@@ -4,8 +4,7 @@ namespace App\Tenant\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
-{
+class User extends Model {
     protected $connection = 'tenant';
     protected $table = 'users';
 
