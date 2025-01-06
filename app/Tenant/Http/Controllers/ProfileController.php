@@ -3,11 +3,8 @@
 namespace App\Tenant\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
 use App\Tenant\Services\UserService;
-use App\Tenant\Traits\AuthenticatedUser;
 use App\Exceptions\HandleException;
 
 class ProfileController extends Controller {

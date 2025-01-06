@@ -38,7 +38,7 @@ class UserService {
     }
 
     public function updateUser(array $data, String $user) {
-        $user = User::where('user', $user)->first();
+        $user = User::where('user', $user)->firstOrFail();
         
         $user->fill([
             'name' => $data['name'] ?? $user->name,
@@ -52,5 +52,12 @@ class UserService {
     
     public function deleteUser(String $user) {
         return User::where('user', $user)->delete();
+    }
+
+    public function syncRolesToUser(array $roles, String $user) {
+        $user = User::where('user', $user)->firstOrFail();
+        $user->roles()->sync($roles);
+    
+        return $user->load('roles');
     }
 }
