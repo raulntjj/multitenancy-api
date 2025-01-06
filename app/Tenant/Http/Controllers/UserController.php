@@ -91,11 +91,25 @@ class UserController extends Controller {
             if (!$user) {
                 throw new HandleException('User not found', 404);
             }
-            
+
+            return response()->json([
+                'status_code' => 200,
+                'status' => 'success',
+                'payload' => $user,
+            ]);
+        } catch (\Exception $e) {
+            throw new HandleException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function syncRoles(Request $request, String $user) {
+        try {
+            $user = $this->userService->syncRolesToUser($data['roles'], $user);
+    
             return response()->json([
                 'status_code' => 204,
                 'status' => 'success',
-                'details' => 'User Deleted.'
+                'details' => user
             ]);
         } catch (\Exception $e) {
             throw new HandleException($e->getMessage(), $e->getCode());

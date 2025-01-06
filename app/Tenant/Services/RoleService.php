@@ -23,11 +23,11 @@ class RoleService {
       return $role;
     }
 
-    public function updateRole(array $data, String $role) {
+    public function updateRole(array $data, String $roleName) {
         $role = Role::where('role', $roleName)->firstOrFail();
 
         $role->fill([
-            'role' => $data['name'] ?? $role->role,
+            'role' => $data['role'] ?? $role->role,
         ])->save();
 
         if (isset($data['permissions'])) {
@@ -37,7 +37,7 @@ class RoleService {
         return $role;
     }
     
-    public function deleteRole(String $role) {
-        return Role::where('role', $role)->delete();
+    public function deleteRole(String $roleName) {
+        return Role::where('role', $roleName)->delete();
     }
 }

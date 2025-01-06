@@ -4,18 +4,18 @@ namespace App\Tenant\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
-use App\Tenant\Services\RoleService;
+use App\Tenant\Services\PermissionService;
 use App\Exceptions\HandleException;
 
-class RoleController extends Controller {
-    protected $roleService;
-    public function __construct(RoleService $roleService) {
-        $this->roleService = $roleService;
+class PermissionController extends Controller {
+    protected $permissionService;
+    public function __construct(PermissionService $permissionService) {
+        $this->permissionService = $permissionService;
     }
 
     public function index(Request $request) {
         try {
-            $roles = $this->roleService->findManyRoles();
+            $permissions = $this->permissionService->findManyPermissions();
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
             throw new HandleException($e->getMessage(), $e->getCode());
@@ -24,16 +24,16 @@ class RoleController extends Controller {
 
     public function create(Request $request) {
         try {
-            $roles = $this->roleService->createRole($request->all());
+            $permissions = $this->permissionService->createPermission($request->all());
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
             throw new HandleException($e->getMessage(), $e->getCode());
         }
     }
 
-    public function update(Request $request, String $role) {
+    public function update(Request $request, String $permission) {
         try {
-            $roles = $this->roleService->updateRole($request->all(), $role);
+            $permissions = $this->permissionService->updatePermission($request->all(), $permission);
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
             throw new HandleException($e->getMessage(), $e->getCode());
@@ -42,7 +42,7 @@ class RoleController extends Controller {
 
     public function destroy(Request $request) {
         try {
-            $roles = $this->roleService->deleteRole();
+            $permissions = $this->permissionService->deletePermission();
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
             throw new HandleException($e->getMessage(), $e->getCode());
