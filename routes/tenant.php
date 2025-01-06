@@ -39,15 +39,16 @@ $router->group([
         $router->post('/users', 'UserController@create');
         $router->put('/users/{user}', 'UserController@update');
         $router->delete('/users/{user}', 'UserController@destroy');
+        $router->post('/users/roles/{user}', 'UserController@syncRoles');
 
         $router->get('/roles', 'RoleController@index');
         $router->post('/roles', 'RoleController@create');
         $router->put('/roles/{role}', 'RoleController@update');
         $router->delete('/roles/{role}', 'RoleController@destroy');
 
-        $router->get('/permisions', 'RoleController@index');
-        $router->post('/permisions', 'RoleController@create');
-        $router->put('/permisions/{permission}', 'RoleController@update');
-        $router->delete('/permisions/{role}', 'RoleController@destroy');
+        $router->get('/permisions', 'PermissionController@index');
+        $router->post('/permisions', 'PermissionController@create');
+        $router->put('/permisions/{permission}', 'PermissionController@update');
+        $router->delete('/permisions/{permission}', 'PermissionController@destroy');
     });
 });
