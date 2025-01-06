@@ -23,6 +23,12 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->foreign('role')
+                ->references('role')
+                ->on('roles')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

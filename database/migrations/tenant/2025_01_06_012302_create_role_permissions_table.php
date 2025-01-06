@@ -22,6 +22,12 @@ return new class extends Migration
                 ->on('user_roles')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->foreign('permission')
+                ->references('permission')
+                ->on('permissions')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
