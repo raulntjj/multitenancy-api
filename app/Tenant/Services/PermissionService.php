@@ -3,7 +3,6 @@
 namespace App\Tenant\Services;
 
 use App\Tenant\Models\Permission;
-use Illuminate\Support\Facades\Hash;
 
 class PermissionService {
 

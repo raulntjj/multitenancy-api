@@ -50,5 +50,12 @@ $router->group([
         $router->post('/permisions', 'PermissionController@create');
         $router->put('/permisions/{permission}', 'PermissionController@update');
         $router->delete('/permisions/{permission}', 'PermissionController@destroy');
+
+        $router->get('/teachers', 'TeacherController@index');
+        $router->get('/teachers/{userId}', 'TeacherController@show');
+        $router->get('/teachers/registration/{registration}', 'TeacherController@showByRegistration');
+        $router->post('/teachers', 'TeacherController@create');
+        $router->put('/teachers/{userId}', 'TeacherController@update');
+        $router->delete('/teachers/{userId}', 'TeacherController@destroy');
     });
 });

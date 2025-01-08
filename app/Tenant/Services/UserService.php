@@ -3,8 +3,6 @@
 namespace App\Tenant\Services;
 
 use App\Tenant\Models\User;
-use Database\Factories\UserFactory;
-
 use Illuminate\Support\Facades\Hash;
 
 class UserService {

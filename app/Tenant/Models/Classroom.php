@@ -18,7 +18,7 @@ class Classroom extends Model {
     }
 
     public function disciplines() {
-        return $this->belongsToMany(Discipline::class, 'classroom_discipines', 'classroom_id', 'discipline_id');
+        return $this->belongsToMany(Discipline::class, 'classroom_disciplines', 'classroom_id', 'discipline_id');
     }
 
     public function teachers() {

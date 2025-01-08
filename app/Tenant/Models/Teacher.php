@@ -18,7 +18,7 @@ class Teacher extends Model {
     }
 
     public function timetables() {
-        return $this->hasMany(Timetable::class, 'teacher_id');
+        return $this->hasMany(Timetable::class, 'user_id');
     }
 
     public function qualifications() {
@@ -30,6 +30,6 @@ class Teacher extends Model {
     }
 
     public function disciplines() {
-        return $this->belongsToMany(Discipline::class, 'teacher_discipines', 'user_id', 'discipline_id');
+        return $this->belongsToMany(Discipline::class, 'teacher_disciplines', 'user_id', 'discipline_id');
     }
 }

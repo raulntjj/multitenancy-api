@@ -4,7 +4,7 @@ namespace App\Tenant\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Teacher extends Model {
+class Discipline extends Model {
     protected $connection = 'tenant';
     protected $table = 'disciplines';
 
@@ -19,10 +19,10 @@ class Teacher extends Model {
     }
 
     public function classroom() {
-        return $this->belongsToMany(Discipline::class, 'classroom_discipines', 'discipline_id', 'classroom_id');
+        return $this->belongsToMany(Classroom::class, 'classroom_disciplines', 'discipline_id', 'classroom_id');
     }
 
     public function teachers() {
-        return $this->belongsToMany(Classroom::class, 'teacher_classrooms', 'discipline_id', 'user_id');
+        return $this->belongsToMany(Teacher::class, 'teacher_classrooms', 'discipline_id', 'user_id');
     }
 }
