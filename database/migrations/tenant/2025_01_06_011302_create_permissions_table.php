@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->string('permission')->primary();
+            $table->userActions();
+            $table->softDeletes();
         });
     }
 

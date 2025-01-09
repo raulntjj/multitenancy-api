@@ -27,8 +27,6 @@ return new class extends Migration
                 ->on('schedules')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->timestamps();
         });
     }
 

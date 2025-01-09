@@ -3,8 +3,11 @@
 namespace App\Tenant\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Tenant\Traits\HasUserActions;
 
 class Classroom extends Model {
+    use HasUserActions;
+
     protected $connection = 'tenant';
     protected $table = 'classrooms';
 

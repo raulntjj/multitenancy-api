@@ -14,6 +14,8 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->string('role')->primary();
+            $table->userActions();
+            $table->softDeletes();
         });
     }
 

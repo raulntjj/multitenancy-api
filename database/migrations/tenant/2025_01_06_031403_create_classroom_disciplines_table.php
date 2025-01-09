@@ -28,8 +28,6 @@ return new class extends Migration
                 ->on('disciplines')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->timestamps();
         });
     }
 

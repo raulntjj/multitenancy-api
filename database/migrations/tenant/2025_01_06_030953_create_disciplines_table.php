@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('concentration_area')->nullable();
             $table->timestamps();
+            $table->userActions();
+            $table->softDeletes();
         });
     }
 

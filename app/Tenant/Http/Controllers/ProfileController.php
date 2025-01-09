@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 use App\Tenant\Services\UserService;
 use App\Exceptions\HandleException;
+use App\Tenant\Traits\AuthenticatedUser;
 
 class ProfileController extends Controller {
     use AuthenticatedUser;

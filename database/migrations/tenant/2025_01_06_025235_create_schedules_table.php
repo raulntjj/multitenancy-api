@@ -19,6 +19,8 @@ return new class extends Migration
             $table->boolean('break')->default(false);
             $table->enum('break_type', ['interval', 'end_of_shift'])->nullable();
             $table->timestamps();
+            $table->userActions();
+            $table->softDeletes();
         });
 
         $schedules = [];
