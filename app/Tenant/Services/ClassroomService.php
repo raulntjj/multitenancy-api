@@ -13,11 +13,9 @@ class ClassroomService {
     
     public function findById(Int $classroomId) {
         return Classroom::with([
-            'qualifications',
-            'classrooms',
-            'disciplines',
             'timetables',
-            'rejections',
+            'disciplines',
+            'teachers',
         ])->where('id', $classroomId)->first();
     }
 

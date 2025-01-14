@@ -13,12 +13,11 @@ class Discipline extends Model {
 
     protected $fillable = [
         'name',
-        'shift',
-        'timetable_id',
+        'concentration_area',
     ];
 
     public function timetables() {
-        return $this->hasMany(Timetable::class, 'classroom_id');
+        return $this->hasMany(Timetable::class, 'discipline_id');
     }
 
     public function classroom() {

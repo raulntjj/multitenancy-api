@@ -14,7 +14,6 @@ class Classroom extends Model {
     protected $fillable = [
         'name',
         'shift',
-        'concentration_area',
     ];
 
     public function timetables() {
