@@ -19,20 +19,7 @@ $router->group([
     'prefix' => '/api/v1/core',
     'middleware' => 'core.audit'
 ], function () use ($router) {
-    $router->get('/', function () {
-        return UtilityHelper::ping('MultiTenancy');
-    });
-
-    $router->post('login', 'AuthController@login');
-    $router->post('register', 'AuthController@register');
-
     $router->group(['middleware' => 'core.auth'], function () use ($router) {
-        $router->get('me', 'ProfileController@show');
-        $router->put('me', 'ProfileController@update');
-        $router->delete('me', 'ProfileController@destroy');
-
-        $router->get('logs', 'AuditLogController@index');
-
         $router->get('tenants', 'TenantController@index');
         $router->post('tenants', 'TenantController@store');
         $router->get('tenants/{slug}', 'TenantController@show');

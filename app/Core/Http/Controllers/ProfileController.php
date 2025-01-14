@@ -29,7 +29,7 @@ class ProfileController extends Controller {
                 'payload' => $user,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -46,7 +46,7 @@ class ProfileController extends Controller {
                 'payload' => $user,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -63,7 +63,7 @@ class ProfileController extends Controller {
                 'details' => 'User Deleted.'
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }

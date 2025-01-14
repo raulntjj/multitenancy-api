@@ -29,7 +29,7 @@ class TeacherController extends Controller {
                 'payload' => $teachers,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -46,7 +46,7 @@ class TeacherController extends Controller {
                 'payload' => $teacher,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -63,7 +63,7 @@ class TeacherController extends Controller {
                 'payload' => $teacher,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -80,7 +80,7 @@ class TeacherController extends Controller {
                 'payload' => $teacher,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -97,7 +97,7 @@ class TeacherController extends Controller {
                 'payload' => $teacher,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -114,7 +114,7 @@ class TeacherController extends Controller {
                 'payload' => $teacher,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }

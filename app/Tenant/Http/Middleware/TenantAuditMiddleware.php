@@ -14,7 +14,7 @@ class TenantAuditMiddleware {
     public function handle($request, Closure $next) {
         $response = $next($request);
 
-        $tenant = $request->route('tenant') ?? 'core';
+        $tenant = $request->route('tenant');
         $month = strtolower(Carbon::now()->format('F'));
 
         $baseLogDir = storage_path("logs/tenants/$tenant");

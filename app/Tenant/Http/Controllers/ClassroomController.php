@@ -27,13 +27,13 @@ class ClassroomController extends Controller {
                 'payload' => $classrooms,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
-    public function show(Request $request, Int $name) {
+    public function show(Request $request, Int $classroomId) {
         try {
-            $classroom = $this->classroomService->findByName($name);
+            $classroom = $this->classroomService->findById($classroomId);
             if (!$classroom) {
                 throw new HandleException('Classroom not found', 404);
             }
@@ -44,24 +44,7 @@ class ClassroomController extends Controller {
                 'payload' => $classroom,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
-        }
-    }
-
-    public function showByRegistration(Request $request, String $registration) {
-        try {
-            $classroom = $this->classroomService->findByRegistration($registration);
-            if (!$classroom) {
-                throw new HandleException('Classroom not found', 404);
-            }
-
-            return response()->json([
-                'status_code' => 200,
-                'status' => 'success',
-                'payload' => $classroom,
-            ]);
-        } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -78,13 +61,13 @@ class ClassroomController extends Controller {
                 'payload' => $classroom,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
-    public function update(Request $request, Int $userId) {
+    public function update(Request $request, Int $classroomId) {
         try {
-            $classroom = $this->classroomService->updateClassroom($request->all(), $userId);
+            $classroom = $this->classroomService->updateClassroom($request->all(), $classroomId);
             if (!$classroom) {
                 throw new HandleException('Classroom not found', 404);
             }
@@ -95,13 +78,13 @@ class ClassroomController extends Controller {
                 'payload' => $classroom,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
-    public function destroy(Request $request, Int $userId) {
+    public function destroy(Request $request, Int $classroomId) {
         try {
-            $classroom = $this->classroomService->deleteClassroom($userId);
+            $classroom = $this->classroomService->deleteClassroom($classroomId);
             if (!$classroom) {
                 throw new HandleException('Classroom not found', 404);
             }
@@ -112,7 +95,7 @@ class ClassroomController extends Controller {
                 'payload' => $classroom,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }

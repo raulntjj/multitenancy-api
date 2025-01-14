@@ -11,39 +11,34 @@ class ClassroomService {
         return Classroom::all();
     }
     
-    public function findByUser(Int $classroomId) {
+    public function findById(Int $classroomId) {
         return Classroom::with([
             'qualifications',
             'classrooms',
             'disciplines',
             'timetables',
             'rejections',
-        ])->where('user_id', $classroomId)->first();
-    }
-
-    public function findByName(Int $classroomId) {
-        return Classroom::with([
-            'qualifications',
-            'classrooms',
-            'disciplines',
-            'timetables',
-            'rejections',
-        ])->where('user_id', $classroomId)->first();
+        ])->where('id', $classroomId)->first();
     }
 
     public function createClassroom(Array $data) {
         return Classroom::create([
-            'user_id' => $data['user_id'],
-            'registration' => $data['registration'],
+            'name' => $data['name'],
+            'shift' => $data['shift'],
         ]);
     }
 
     public function updateClassroom(array $data, int $classroomId) {
-        return Classroom::where('user_id', $classroomId)->first();
+        $classroom = Classroom::where('id', $classroomId)->firstOrFail();
+        $classroom->fill([
+            'name' => $data['name'] ?? $classroom->name,
+            'shift' => $data['shift'] ?? $classroom->shift,
+        ])->save();
 
+        return $classroom;
     }
     
     public function deleteClassroom(Int $classroomId) {
-        return Classroom::where('user_id', $classroomId)->delete();
+        return Classroom::where('id', $classroomId)->delete();
     }
 }

@@ -33,7 +33,7 @@ class TenantController extends Controller {
                 'payload' => $tenants,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -50,7 +50,7 @@ class TenantController extends Controller {
                 'payload' => $tenant,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -67,7 +67,7 @@ class TenantController extends Controller {
                 'payload' => $tenant,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -84,7 +84,7 @@ class TenantController extends Controller {
                 'payload' => $tenant,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -101,7 +101,7 @@ class TenantController extends Controller {
                 'details' => 'Tenant deleted succefully!',
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }

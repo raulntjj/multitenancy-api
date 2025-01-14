@@ -122,13 +122,21 @@ $app->router->get('/', function () {
 $app->router->group([
     'namespace' => 'App\Core\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/core.php';
+    $coreRoutes = glob(__DIR__ . '/../routes/Core/*.php');
+    
+    foreach ($coreRoutes as $coreFile) {
+        require $coreFile;
+    }
 });
 
 $app->router->group([
     'namespace' => 'App\Tenant\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/tenant.php';
+    $tenantRoutes = glob(__DIR__ . '/../routes/Tenant/*.php');
+    
+    foreach ($tenantRoutes as $routeFile) {
+        require $routeFile;
+    }
 });
 
 // Fallback

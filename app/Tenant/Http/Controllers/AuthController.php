@@ -28,14 +28,18 @@ class AuthController extends Controller {
                 throw new HandleException('Credentials does not match', 404);
             }
     
+            if ($user->deleted_at != null) {
+                throw new HandleException('Account deleted', 404);
+            }
+
             if (!password_verify($credentials['password'], $user->password)) {
                 throw new HandleException('Credentials does not match', 401);
             }
 
             $payload = [
-                'iss'  => 'core-api',
+                'iss'  => $request->route('tenant'),
                 'sub'  => $user->id,
-                'role' => 'tenant',
+                'role' => $user->role ?? 'admin',
                 'iat'  => time(),
                 'exp'  => time() + 3600,
             ];
@@ -55,7 +59,7 @@ class AuthController extends Controller {
 
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -71,7 +75,7 @@ class AuthController extends Controller {
             ]);
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }

@@ -13,9 +13,9 @@ trait HasUserActions {
 
     public static function bootHasUserActions() {
         $token = request()->bearerToken();
-        
+
         $decoded = (object) ['sub' => NULL];
-        
+
         try {
             if ($token) {
                 $decoded = JWT::decode($token, new Key(env('JWT_SECRET'), 'HS256'));
@@ -29,11 +29,11 @@ trait HasUserActions {
         static::creating(function (Model $model) use ($decoded) {
             $model->created_by = $decoded->sub ?? NULL;
         });
-    
+
         static::updating(function (Model $model) use ($decoded) {
             $model->updated_by = $decoded->sub ?? NULL;
         });
-    
+
         static::deleting(function (Model $model) use ($decoded) {
             if (method_exists($model, 'isForceDeleting') && !$model->isForceDeleting()) {
                 $model->deleted_by = $decoded->sub ?? NULL;
@@ -41,6 +41,7 @@ trait HasUserActions {
             }
         });
     }
+    
     public function initializeHasUserActions() {
         $this->mergeFillable(['created_by', 'updated_by', 'deleted_by']);
     }

@@ -30,7 +30,7 @@ class UserController extends Controller {
                 'payload' => $users,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -47,7 +47,7 @@ class UserController extends Controller {
                 'payload' => $user,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -64,7 +64,7 @@ class UserController extends Controller {
                 'payload' => $user,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -81,7 +81,7 @@ class UserController extends Controller {
                 'payload' => $user,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -98,7 +98,7 @@ class UserController extends Controller {
                 'payload' => $user,
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -112,7 +112,7 @@ class UserController extends Controller {
                 'details' => user
             ]);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }

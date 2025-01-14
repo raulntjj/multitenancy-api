@@ -18,7 +18,7 @@ class RoleController extends Controller {
             $roles = $this->roleService->findManyRoles();
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -27,7 +27,7 @@ class RoleController extends Controller {
             $roles = $this->roleService->createRole($request->all());
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -36,7 +36,7 @@ class RoleController extends Controller {
             $roles = $this->roleService->updateRole($request->all(), $role);
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 
@@ -45,7 +45,7 @@ class RoleController extends Controller {
             $roles = $this->roleService->deleteRole();
             throw new HandleException("Something went wrong!", 500);
         } catch (\Exception $e) {
-            throw new HandleException($e->getMessage(), $e->getCode());
+            throw new HandleException($e);
         }
     }
 }
