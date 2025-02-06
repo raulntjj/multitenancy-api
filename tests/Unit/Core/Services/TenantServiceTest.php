@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Core;
+namespace Tests\Unit\Core\Services;
 
 use App\Core\Models\Tenant;
 use App\Core\Services\TenantService;

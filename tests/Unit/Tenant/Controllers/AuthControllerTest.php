@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Tenant\Controller;
+namespace Tests\Unit\Tenant\Controllers;
 
 use App\Tenant\Models\User;
 use Database\Factories\Tenant\UserFactory;
