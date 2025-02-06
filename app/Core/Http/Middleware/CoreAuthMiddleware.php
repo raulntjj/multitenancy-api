@@ -5,6 +5,8 @@ namespace App\Core\Http\Middleware;
 use Closure;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\SignatureInvalidException;
 use App\Exceptions\HandleException;
 
 class CoreAuthMiddleware {
@@ -18,13 +20,20 @@ class CoreAuthMiddleware {
 
         try {
             $decoded = JWT::decode($token, new Key(env('JWT_SECRET'), 'HS256'));
-            if (empty($decoded->role) || $decoded->role !== 'core') {
-                throw new HandleException('Forbidden', 403);
+
+            if (empty($decoded->role)) {
+                throw new HandleException('Forbidden: Role not specified', 403);
             }
 
             $request->attributes->add(['jwt_decoded' => $decoded]);
+        } catch (ExpiredException $e) {
+            throw new HandleException($e->getMessage(), $e->getCode());
+        } catch (SignatureInvalidException $e) {
+            throw new HandleException($e->getMessage(), $e->getCode());
+        } catch (\UnexpectedValueException $e) {
+            throw new HandleException($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
-            throw new HandleException('Invalid token', 401);
+            throw new HandleException($e->getMessage(), $e->getCode());
         }
 
         return $next($request);

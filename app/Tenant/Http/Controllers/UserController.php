@@ -7,11 +7,11 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
 use App\Tenant\Services\UserService;
-use App\Tenant\Traits\AuthenticatedUser;
+use App\Tenant\Traits\HasAuthenticatedUser;
 use App\Exceptions\HandleException;
 
 class UserController extends Controller {
-    use AuthenticatedUser;
+    use HasAuthenticatedUser;
     protected $userService;
     public function __construct(UserService $userService) {
         $this->userService = $userService;

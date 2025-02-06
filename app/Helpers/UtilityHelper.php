@@ -8,7 +8,7 @@ class UtilityHelper {
             'status_code' => 200,
             'status' => 'success',
             'details' => 'Connection stabilized successfully!',
-            'server' => 'Timetable API Rest',
+            'server' => 'Multitenancy API REST',
             'version' => 'v1 - 1.0',
         ];
 
