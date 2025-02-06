@@ -16,7 +16,7 @@ use App\Helpers\UtilityHelper;
 */
 
 $router->group([
-    'prefix' => '/api/v1/{tenant}',
+    'prefix' => '/api/v1',
     'middleware' => ['tenant.identify', 'tenant.audit']
 ], function () use ($router) {
     $router->get('/', function (Request $request) {
