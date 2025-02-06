@@ -5,11 +5,11 @@ namespace App\Core\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Log;
 use Monolog\Handler\StreamHandler;
-use App\Core\Traits\AuthenticatedUser;
+use App\Core\Traits\HasAuthenticatedUser;
 use Illuminate\Support\Carbon;
 
 class CoreAuditMiddleware {
-    use AuthenticatedUser;
+    use HasAuthenticatedUser;
 
     public function handle($request, Closure $next) {
         $response = $next($request);
@@ -31,10 +31,7 @@ class CoreAuditMiddleware {
         $auditLogger = new \Monolog\Logger('audit');
         $auditLogger->pushHandler(new StreamHandler($auditLogFile, \Monolog\Logger::ERROR));
         
-        $user = null;
-        if($request->path() != 'api/v1/core/login' && $request->path() != 'api/v1/core/register') {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
-        }
+        $user = $this->getHasAuthenticatedUser($request->bearerToken());
 
         $logData = [
             'tenant' => $tenant,
