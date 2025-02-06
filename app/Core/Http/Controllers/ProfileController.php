@@ -7,11 +7,11 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Laravel\Lumen\Routing\Controller;
 use App\Core\Services\UserService;
-use App\Core\Traits\AuthenticatedUser;
+use App\Core\Traits\HasAuthenticatedUser;
 use App\Exceptions\HandleException;
 
 class ProfileController extends Controller {
-    use AuthenticatedUser;
+    use HasAuthenticatedUser;
     protected $userService;
     public function __construct(UserService $userService) {
         $this->userService = $userService;
@@ -19,7 +19,7 @@ class ProfileController extends Controller {
 
     public function show(Request $request) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             if (!$user) {
                 throw new HandleException('User not found', 404);
             }
@@ -35,7 +35,7 @@ class ProfileController extends Controller {
 
     public function update(Request $request) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $user = $this->userService->updateUser($request->all(), $user->id);
             if (!$user) {
                 throw new HandleException('User not found', 404);
@@ -52,7 +52,7 @@ class ProfileController extends Controller {
 
     public function destroy(Request $request) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $user = $this->userService->deleteUser($user->id);
             if (!$user) {
                 throw new HandleException('User not found', 404);

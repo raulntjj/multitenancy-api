@@ -7,13 +7,13 @@ use Firebase\JWT\Key;
 use App\Core\Services\UserService;
 use App\Exceptions\HandleException;
 
-trait AuthenticatedUser {
+trait HasAuthenticatedUser {
     protected $userService;
     public function __construct(UserService $userService) {
         $this->userService = $userService;
     }
     
-    private function getAuthenticatedUser($token) {
+    private function getHasAuthenticatedUser($token) {
         if (!$token) {
             throw new HandleException('Token not provided', 401);
         }

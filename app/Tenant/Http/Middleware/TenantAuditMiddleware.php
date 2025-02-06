@@ -5,11 +5,11 @@ namespace App\Tenant\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Log;
 use Monolog\Handler\StreamHandler;
-use App\Tenant\Traits\AuthenticatedUser;
+use App\Tenant\Traits\HasAuthenticatedUser;
 use Illuminate\Support\Carbon;
 
 class TenantAuditMiddleware {
-    use AuthenticatedUser;
+    use HasAuthenticatedUser;
 
     public function handle($request, Closure $next) {
         $response = $next($request);
@@ -33,7 +33,7 @@ class TenantAuditMiddleware {
         
         $user = null;
         if($request->path() != 'api/v1/' . $tenant . '/login' && $request->path() != 'api/v1/' . $tenant . '/register') {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
         }
 
         $logData = [

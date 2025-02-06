@@ -7,10 +7,10 @@ use Laravel\Lumen\Routing\Controller;
 use App\Exceptions\HandleException;
 use App\Core\Services\TenantService;
 use App\Core\Services\UserService;
-use App\Core\Traits\AuthenticatedUser;
+use App\Core\Traits\HasAuthenticatedUser;
 
 class TenantController extends Controller {
-    use AuthenticatedUser;
+    use HasAuthenticatedUser;
 
     protected $tenantService;
     protected $userService;
@@ -25,7 +25,7 @@ class TenantController extends Controller {
 
     public function index(Request $request) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $tenants = $this->tenantService->findManyTenants();
             return response()->json([
                 'status_code' => 200,
@@ -39,7 +39,7 @@ class TenantController extends Controller {
 
     public function show(Request $request, String $slug) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $tenant = $this->tenantService->findTenant($slug);
             if (!$tenant) {
                 throw new HandleException('Tenant not found', 404);
@@ -56,7 +56,7 @@ class TenantController extends Controller {
 
     public function store(Request $request) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $tenant = $this->tenantService->createTenant($request->all());
             if (!$tenant) {
                 throw new HandleException('An error ocurred', 500);
@@ -73,7 +73,7 @@ class TenantController extends Controller {
 
     public function update(Request $request, String $slug) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $tenant = $this->tenantService->updateTenant($request->all(), $slug);
             if (!$tenant) {
                 throw new HandleException('Tenant not found', 404);
@@ -90,7 +90,7 @@ class TenantController extends Controller {
 
     public function destroy(Request $request, String $slug) {
         try {
-            $user = $this->getAuthenticatedUser($request->bearerToken());
+            $user = $this->getHasAuthenticatedUser($request->bearerToken());
             $tenant = $this->tenantService->deleteTenant($slug);
             if (!$tenant) {
                 throw new HandleException('Tenant not found', 404);
