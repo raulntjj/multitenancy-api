@@ -9,7 +9,7 @@ use App\Exceptions\HandleException;
 
 class IdentifyTenant {
     public function handle($request, Closure $next) {
-        $tenantSlug = $request->route('tenant');
+        $tenantSlug = $request->header('X-Tenant');
 
         $tenant = Tenant::where('slug', $tenantSlug)->first();
 
