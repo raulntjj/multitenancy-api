@@ -1,26 +1,125 @@
-# Lumen PHP Framework
+# Lumen Multi-Tenancy REST API
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/lumen)](https://packagist.org/packages/laravel/lumen-framework)
+Projeto API REST multitenancy com isolamento completo de dados, autenticação JWT e auditoria segregada entre core e tenants.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+![Docker](https://img.shields.io/badge/Docker-%232496ED?logo=docker&logoColor=white)
+![Lumen](https://img.shields.io/badge/Lumen-%23FF2D20?logo=laravel&logoColor=white)
+![PHPUnit](https://img.shields.io/badge/PHPUnit-%234484C5?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-%2300758F?logo=mysql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-%23000000?logo=jsonwebtokens&logoColor=white)
 
-> **Note:** In the years since releasing Lumen, PHP has made a variety of wonderful performance improvements. For this reason, along with the availability of [Laravel Octane](https://laravel.com/docs/octane), we no longer recommend that you begin new projects with Lumen. Instead, we recommend always beginning new projects with [Laravel](https://laravel.com).
+## 📋 Índice
+- [Visão Geral](#-visão-geral)
+- [Endpoints Principais](#-endpoints-principais)
+- [Instalação](#-instalação)
+- [Uso com Postman](#-uso-com-postman)
+- [Migrações](#-migrações)
+- [Testes](#-testes)
+- [Comandos Docker](#-comandos-docker)
 
-## Official Documentation
+## 🌟 Visão Geral
+Arquitetura modular com dois contextos principais:
+1. **Core API** (`/core`): 
+   - Gestão central de tenants
+   - Autenticação master
+   - Auditoria administrativa
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+2. **Tenant API** (`/`):
+   - Operações específicas do tenant
+   - Usuários locais
+   - Auditoria segregada
 
-## Contributing
+## 🚀 Endpoints Principais
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🔑 Autenticação
+| Método | Endpoint               | Descrição                     |
+|--------|------------------------|-------------------------------|
+| POST   | `/core/login`          | Login no sistema core         |
+| POST   | `/login`               | Login em tenant específico    |
 
-## Security Vulnerabilities
+**Exemplo Request:**
+```json
+{
+  "email": "admin@example.com",
+  "password": "1234"
+}
+```
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### 👥 Gestão de Tenants (Core)
+| Método | Endpoint                      | Ação                          |
+|--------|-------------------------------|-------------------------------|
+| POST   | `/api/v1/core/tenants`        | Criar novo tenant             |
+| GET    | `/api/v1/core/tenants`        | Listar todos tenants          |
+| PUT    | `/api/v1/core/tenants/{slug}` | Atualizar tenant              |
+| DELETE | `/api/v1/core/tenants/{slug}` | Remover tenant                |
 
-## License
+**Exemplo Create Tenant:**
+```bash
+curl -X POST http://localhost:3001/core/tenants \
+  -H "Authorization: Bearer {JWT_CORE}" \
+  -d '{
+    "name": "Meu Tenant",
+    "slug": "tenant",
+    "db_host": "db",
+    "db_name": "tenant_01",
+    "db_user": "root",
+    "db_password": "root"
+  }'
+```
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 👤 Operações por Tenant
+| Método | Endpoint                     | Descrição                 |
+|--------|------------------------------|---------------------------|
+| POST   | `/api/v1/users`            | Criar usuário no tenant   |
+| GET    | `/api/v1/users`            | Listar usuários           |
+| PUT    | `/api/v1/users/{username}` | Atualizar usuário         |
+
+**Exemplo Header:**
+```bash
+-H "X-Tenant: tenant" 
+-H "Authorization: Bearer {JWT_TENANT}"
+```
+
+### 📊 Auditoria
+| Contexto | Endpoint           | Dados Auditados               |
+|----------|--------------------|-------------------------------|
+| Core     | `/core/logs`       | Operações administrativas     |
+| Tenant   | `/{tenant}/logs`   | Ações específicas do tenant   |
+
+## 📦 Instalação
+```bash
+git clone https://github.com/raulntjj/multitenancy-api.git
+cd multitenancy-api
+make build
+```
+## 📦 Migrações
+**Para tenants específicos:**
+```bash
+docker compose exec multitenancy php artisan tenant:migrate tenant
+```
+
+**Rollback:**
+```bash
+docker compose exec multitenancy php artisan tenant:rollback --step=2
+```
+
+## 🧪 Testes
+Para testes está sendo utilizado a framework PHPUnit, para rodar os testes utilize:
+```bash
+make test
+```
+
+## 🐳 Comandos Docker/Makefile
+| Comando       | Descrição                                  |
+|---------------|--------------------------------------------|
+| `make build`  | Constrói os containers e inicia a API.     |
+| `make kill`   | Para e remove todos os containers/volumes. |
+| `make start`  | Inicia os containers.                      |
+| `make stop`   | Para os containers.                        |
+| `make restart`| Reinicia os containers.                    |
+| `make logs`   | Exibe logs em tempo real.                  |
+| `make shell`  | Acessa o shell do container da API.        |
+| `make test`   | Executa testes PHPUnit.                    |
+
+## 📄 Licença
+[MIT](https://choosealicense.com/licenses/mit/) - Consulte `LICENSE` para detalhes.
